@@ -1,9 +1,17 @@
 class UsersController < ApplicationController
   def index
-    @users = User.all
+    result = User::Operation::Index.call
+
+    if result.success?
+      render html: cell(User::Cell::Index, result).call.html_safe
+    else
+      redirect_to root_path, alert: "Error loading users"
+    end
   end
+
   def new
-    @form = User::Contract::Create.new(User.new)
+    result = User::Operation::New.call
+    render html: concept(User::Cell::New, result)
   end
 
   def create
