@@ -1,0 +1,8 @@
+<div class="bg-white rounded-lg shadow-md p-6 mt-8">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800">Travel Options</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% available_routes.each do |route| %>
+      <%= cell(Player::Cell::TravelRoute, { route: route, player: player }) %>
+    <% end %>
+  </div>
+</div>

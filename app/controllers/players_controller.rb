@@ -29,16 +29,44 @@ class PlayersController < ApplicationController
   end
 
   def buy_good
-    redirect_to player_path(params[:id]), notice: "Buy functionality coming soon"
+    result = Player::Operation::BuyGood.call(params: {
+      player_id: params[:id],
+      good_id: params[:good_id],
+      quantity: params[:quantity]
+    })
+    
+    if result.success?
+      redirect_to player_path(params[:id]), notice: "Purchased #{result[:quantity]} units for #{result[:total_cost]} credits"
+    else
+      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+    end
   end
 
   def sell_good
-    redirect_to player_path(params[:id]), notice: "Sell functionality coming soon"
+    result = Player::Operation::SellGood.call(params: {
+      player_id: params[:id],
+      good_id: params[:good_id],
+      quantity: params[:quantity]
+    })
+    
+    if result.success?
+      redirect_to player_path(params[:id]), notice: "Sold #{result[:quantity]} units for #{result[:total_earning]} credits"
+    else
+      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+    end
   end
 
   def travel
-    # TODO: Vytvoříme Travel operation
-    redirect_to player_path(params[:id]), notice: "Travel functionality coming soon"
+    result = Player::Operation::Travel.call(params: {
+      player_id: params[:id],
+      destination_id: params[:destination_id]
+    })
+    
+    if result.success?
+      redirect_to player_path(params[:id]), notice: "Traveled to #{result[:destination].name}"
+    else
+      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+    end
   end
 
   private

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
     result = User::Operation::Index.call
 
     if result.success?
-      render html: cell(User::Cell::Index, result).call.html_safe
+      render cell(User::Cell::Index, result)
     else
       redirect_to root_path, alert: "Error loading users"
     end
@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 
   def new
     result = User::Operation::New.call
-    render html: concept(User::Cell::New, result)
+    render concept(User::Cell::New, result)
   end
 
   def create

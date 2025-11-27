@@ -1,0 +1,38 @@
+<div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+  <div class="flex items-center justify-between mb-2">
+    <h3 class="font-bold text-lg"><%= market_price.good.name %></h3>
+    <span class="text-sm text-gray-500">Stock: <%= market_price.stock %></span>
+  </div>
+  
+  <div class="grid grid-cols-2 gap-2 mb-3 text-sm">
+    <div>
+      <span class="text-gray-600">Buy:</span>
+      <span class="font-bold text-green-600"><%= market_price.buy_price %> cr</span>
+    </div>
+    <div>
+      <span class="text-gray-600">Sell:</span>
+      <span class="font-bold text-blue-600"><%= market_price.sell_price %> cr</span>
+    </div>
+    <div class="col-span-2">
+      <span class="text-gray-600">Quality:</span>
+      <span class="font-bold"><%= market_price.quality %>%</span>
+    </div>
+  </div>
+  
+  <div class="flex gap-2">
+    <%= form_with url: buy_good_player_path(player, market_price.good.id), method: :post, class: "flex gap-2 flex-1" do |f| %>
+      <%= f.number_field :quantity, value: 1, min: 1, max: [market_price.stock, 100].min, 
+          class: "flex-1 rounded border-gray-300 focus:border-blue-500 focus:ring-blue-500" %>
+      <%= f.submit "Buy", class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition cursor-pointer" %>
+    <% end %>
+    
+    <%= form_with url: sell_good_player_path(player, market_price.good.id), method: :post, class: "flex gap-2 flex-1" do |f| %>
+      <%= f.number_field :quantity, value: 1, min: 1, max: max_sell_quantity,
+          disabled: !can_sell?,
+          class: "flex-1 rounded border-gray-300 focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-100" %>
+      <%= f.submit "Sell", 
+          disabled: !can_sell?,
+          class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" %>
+    <% end %>
+  </div>
+</div>

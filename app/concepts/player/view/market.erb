@@ -1,0 +1,16 @@
+<div class="bg-white rounded-lg shadow-md p-6">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-2xl font-bold text-gray-800">Market at <%= planet.name %></h2>
+    <%= planet_badge %>
+  </div>
+  
+  <div class="space-y-3">
+    <% market_prices.each do |mp| %>
+      <%= cell(Player::Cell::MarketItem, { 
+        market_price: mp, 
+        player: player, 
+        inventory: inventory 
+      }) %>
+    <% end %>
+  </div>
+</div>

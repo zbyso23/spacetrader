@@ -35,7 +35,17 @@ createdb myapp_development -O myuser
 psql
 
 postgres=# \password myuser
+```
 
+`vim /etc/postgresql/16/main/pg_hba.conf`
+```
+host    all             all             127.0.0.1/32            scram-sha-256
+->
+host    all             all             127.0.0.1/32            md5
+
+host    all             all             ::1/128                 scram-sha-256
+->
+host    all             all             ::1/128                 md5
 ```
 
 This README would normally document whatever steps are necessary to get the

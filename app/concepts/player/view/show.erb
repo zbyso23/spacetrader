@@ -1,120 +1,12 @@
-<!-- app/concepts/player/view/show.erb -->
-<div class="game-interface">
-  <div class="player-info">
-    <h1><%= player.name %></h1>
-    <p>Credits: <strong><%= player.credit %></strong></p>
-    <p>Fuel: <strong><%= player.fuel %></strong></p>
-    <p>Reputation: <strong><%= player.reputation %></strong></p>
-    <p>Location: <strong><%= planet.name %></strong> (<%= planet.planet_type %>)</p>
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <%= cell(Player::Cell::PlayerInfo, model) %>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <%= cell(Player::Cell::Inventory, model) %>
+    <%= cell(Player::Cell::Market, model) %>
   </div>
 
-  <div class="inventory">
-    <h2>Your Inventory</h2>
-    <% if inventory.any? %>
-      <table>
-        <thead>
-          <tr>
-            <th>Good</th>
-            <th>Quantity</th>
-            <th>Quality</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% inventory.each do |inv| %>
-            <tr>
-              <td><%= inv.good.name %></td>
-              <td><%= inv.quantity %></td>
-              <td><%= inv.quality %>%</td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <p>Empty inventory</p>
-    <% end %>
-  </div>
+  <%= cell(Player::Cell::Travel, model) %>
 
-  <div class="market">
-    <h2>Market at <%= planet.name %></h2>
-    <% if planet.has_fixed_quality? %>
-      <p class="info">✓ Fixed quality goods (Bank available)</p>
-    <% else %>
-      <p class="info">⚠ Variable quality goods (Loan sharks)</p>
-    <% end %>
-    
-    <table>
-      <thead>
-        <tr>
-          <th>Good</th>
-          <th>Buy Price</th>
-          <th>Sell Price</th>
-          <th>Quality</th>
-          <th>Stock</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% market_prices.each do |mp| %>
-          <tr>
-            <td><%= mp.good.name %></td>
-            <td><%= mp.buy_price %></td>
-            <td><%= mp.sell_price %></td>
-            <td><%= mp.quality %>%</td>
-            <td><%= mp.stock %></td>
-            <td>
-              <%= button_to "Buy", buy_good_player_path(player, mp.good.id), method: :post, class: "btn-small" %>
-              <%= button_to "Sell", sell_good_player_path(player, mp.good.id), method: :post, class: "btn-small" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="travel">
-    <h2>Travel Options</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Destination</th>
-          <th>Type</th>
-          <th>Fuel Cost</th>
-          <th>Time</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% available_routes.each do |route| %>
-          <tr>
-            <td><%= route.to_planet.name %></td>
-            <td><%= route.to_planet.planet_type %></td>
-            <td><%= route.fuel_cost %></td>
-            <td><%= route.time_cost %> hours</td>
-            <td>
-              <% if player.fuel >= route.fuel_cost %>
-                <%= button_to "Travel", travel_player_path(player, destination_id: route.to_planet.id), method: :post, class: "btn-small" %>
-              <% else %>
-                <span class="disabled">Not enough fuel</span>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-
-  <%= link_to "Back to Players", user_players_path(player.user_id) %>
+  <%= link_to "← Back to Players", user_players_path(player.user_id), class: "inline-block mt-8 text-blue-600 hover:text-blue-800 font-medium" %>
 </div>
-
-<style>
-  .game-interface { max-width: 1200px; margin: 0 auto; padding: 20px; }
-  .player-info { background: #f0f0f0; padding: 20px; margin-bottom: 20px; border-radius: 5px; }
-  .inventory, .market, .travel { margin-bottom: 30px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-  th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
-  th { background: #333; color: white; }
-  .btn, .btn-small { padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border: none; border-radius: 3px; display: inline-block; cursor: pointer; }
-  .btn-small { padding: 4px 8px; font-size: 0.9em; }
-  .disabled { color: #999; }
-  .info { background: #e7f3ff; padding: 10px; border-radius: 3px; }
-</style>

@@ -1,0 +1,31 @@
+<div class="bg-white rounded-lg shadow-md p-6">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800">Your Inventory</h2>
+  <% if inventory.any? %>
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Good</th>
+            <th class="px-4 py-2 text-right">Quantity</th>
+            <th class="px-4 py-2 text-right">Quality</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y">
+          <% inventory.each do |inv| %>
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium"><%= inv.good.name %></td>
+              <td class="px-4 py-3 text-right"><%= inv.quantity %></td>
+              <td class="px-4 py-3 text-right">
+                <span class="inline-flex items-center px-2 py-1 rounded text-sm font-medium <%= quality_class(inv.quality) %>">
+                  <%= inv.quality %>%
+                </span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="text-gray-500 italic">Empty inventory</p>
+  <% end %>
+</div>
