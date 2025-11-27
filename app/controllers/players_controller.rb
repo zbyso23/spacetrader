@@ -69,6 +69,31 @@ class PlayersController < ApplicationController
     end
   end
 
+  def refuel
+    result = Player::Operation::Refuel.call(params: {
+      player_id: params[:id]
+    })
+
+    if result.success?
+      redirect_to player_path(params[:id]), notice: "Refueled"
+    else
+      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+    end
+  end
+
+  def restart
+    result = Player::Operation::Restart.call(params: {
+      player_id: params[:id]
+    })
+
+    if result.success?
+      redirect_to player_path(params[:id]), notice: "Restarted"
+    else
+      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+    end
+  end
+
+
   private
 
   def player_params

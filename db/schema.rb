@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_11_26_231507) do
+ActiveRecord::Schema[7.0].define(version: 2025_11_27_221856) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "banks", force: :cascade do |t|
+    t.bigint "planet_id", null: false
+    t.decimal "base_interest", precision: 10, scale: 2, default: "2.0"
+    t.integer "reputation_required", default: 5, null: false
+    t.integer "reputation_premium", default: 25, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["planet_id"], name: "index_banks_on_planet_id"
+  end
 
   create_table "goods", force: :cascade do |t|
     t.string "name", null: false
@@ -20,6 +30,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_26_231507) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_goods_on_name", unique: true
+  end
+
+  create_table "loan_sharks", force: :cascade do |t|
+    t.bigint "planet_id", null: false
+    t.decimal "base_interest", precision: 10, scale: 2, default: "20.0"
+    t.integer "reputation_required", default: 1, null: false
+    t.integer "reputation_premium", default: 10, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["planet_id"], name: "index_loan_sharks_on_planet_id"
   end
 
   create_table "market_prices", force: :cascade do |t|
@@ -90,6 +110,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_26_231507) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "banks", "planets"
+  add_foreign_key "loan_sharks", "planets"
   add_foreign_key "market_prices", "goods"
   add_foreign_key "market_prices", "planets"
   add_foreign_key "player_inventories", "goods"

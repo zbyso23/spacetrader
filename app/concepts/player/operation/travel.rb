@@ -61,14 +61,12 @@ class Player::Operation::Travel < Trailblazer::Operation
   end
 
   def update_market_prices(ctx, destination:, **)
-    # Změň ceny na trzích po cestování
     destination.market_prices.each do |mp|
-      # Náhodná změna ceny ±10%
       change = rand(-10..10)
+      sell_change = mp.buy_price > 25 ? rand(-10..1) : rand(-3..1)
       new_buy_price = [mp.buy_price + (mp.buy_price * change / 100), 1].max
-      new_sell_price = [mp.sell_price + (mp.sell_price * change / 100), 1].max
+      new_sell_price = new_buy_price + sell_change  #[mp.sell_price + (mp.sell_price * change / 100), 1].max
       
-      # Měsíce mají variabilní kvalitu
       if destination.planet_type == 'moon' && !destination.has_fixed_quality?
         new_quality = rand(40..90)
         mp.update(buy_price: new_buy_price, sell_price: new_sell_price, quality: new_quality)

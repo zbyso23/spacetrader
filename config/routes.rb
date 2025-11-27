@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :players, only: [:show] do
     member do
       post :travel
+      post :refuel
+      post :restart
       post 'buy/:good_id', to: 'players#buy_good', as: :buy_good
       post 'sell/:good_id', to: 'players#sell_good', as: :sell_good
     end

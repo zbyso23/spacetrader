@@ -8,5 +8,13 @@
 
   <%= cell(Player::Cell::Travel, model) %>
 
+  <%= button_to "Refuel", refuel_player_path(player), 
+      method: :post, 
+      class: "w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded transition" %>
+      
+  <%= button_to "Restart", restart_player_path(player), 
+      method: :post, 
+      class: "w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition" %>
+
   <%= link_to "← Back to Players", user_players_path(player.user_id), class: "inline-block mt-8 text-blue-600 hover:text-blue-800 font-medium" %>
 </div>
