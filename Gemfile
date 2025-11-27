@@ -42,3 +42,7 @@ gem 'spring-commands-rspec'
 gem 'webmock'
 gem 'finite_machine'
 gem 'jwt'
+
+
+gem 'sprockets-rails'
+gem "tailwindcss-rails", "~> 4.4"

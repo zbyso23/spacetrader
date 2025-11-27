@@ -28,6 +28,14 @@ class PlayersController < ApplicationController
     render cell(Player::Cell::Show, result)
   end
 
+  def buy_good
+    redirect_to player_path(params[:id]), notice: "Buy functionality coming soon"
+  end
+
+  def sell_good
+    redirect_to player_path(params[:id]), notice: "Sell functionality coming soon"
+  end
+
   def travel
     # TODO: Vytvoříme Travel operation
     redirect_to player_path(params[:id]), notice: "Travel functionality coming soon"
