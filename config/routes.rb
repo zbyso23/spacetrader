@@ -1,12 +1,15 @@
 Rails.application.routes.draw do
   root "users#index"
 
-  resources :users, only: [:new, :create, :index]
-  resources :players do
+  resources :users do
+    resources :players, only: [:index, :new, :create]
+  end
+  
+  resources :players, only: [:show] do
     member do
       post :travel
-      post 'goods/:good_id/buy', to: 'player/goods#buy', as: :buy_good
-      post 'goods/:good_id/sell', to: 'player/goods#sell', as: :sell_good
+      post 'buy/:good_id', to: 'players#buy_good', as: :buy_good
+      post 'sell/:good_id', to: 'players#sell_good', as: :sell_good
     end
   end
 end

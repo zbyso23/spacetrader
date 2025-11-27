@@ -1,6 +1,6 @@
 <h1>Players</h1>
 
-<%= link_to "New Player", new_player_path(user_id: user_id), class: "btn" %>
+<%= link_to "New Player", new_user_player_path(user_id), class: "btn" %>
 
 <table>
   <thead>
@@ -30,3 +30,4 @@
     <% end %>
   </tbody>
 </table>
+<%= link_to "Back to Users", users_path %>

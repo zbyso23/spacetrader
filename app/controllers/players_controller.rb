@@ -1,12 +1,18 @@
 class PlayersController < ApplicationController
   def index
-    run Player::Operation::Index, params: { user_id: params[:user_id] }
-    render cell(Player::Cell::Index, @model)
+    result = Player::Operation::Index.call(params: { user_id: params[:user_id] })
+
+    puts "Result: #{result.inspect}"
+    puts "Success?: #{result.success?}"
+    puts "Players: #{result[:players].inspect}"
+    puts "User ID: #{result[:user_id].inspect}"
+
+    render cell(Player::Cell::Index, result)
   end
 
   def new
-    run Player::Operation::New, params: { user_id: params[:user_id] }
-    render cell(Player::Cell::New, @model)
+    result = Player::Operation::New.call(params: { user_id: params[:user_id] })
+    render cell(Player::Cell::New, result)
   end
 
   def create
@@ -14,16 +20,22 @@ class PlayersController < ApplicationController
       return redirect_to player_path(result[:contract].model), notice: "Player created successfully"
     end
     
-    render cell(Player::Cell::New, @model)
+    render cell(Player::Cell::New, @model, user_id: params[:player][:user_id])
   end
 
   def show
-    run Player::Operation::Show, params: { id: params[:id] }
-    render cell(Player::Cell::Show, @model)
+    result = Player::Operation::Show.call(params: { id: params[:id] })
+    render cell(Player::Cell::Show, result)
   end
 
   def travel
     # TODO: Vytvoříme Travel operation
     redirect_to player_path(params[:id]), notice: "Travel functionality coming soon"
+  end
+
+  private
+
+  def player_params
+    { player: params.require(:player).permit(:name, :user_id) }
   end
 end

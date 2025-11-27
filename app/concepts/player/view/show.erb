@@ -1,3 +1,4 @@
+<!-- app/concepts/player/view/show.erb -->
 <div class="game-interface">
   <div class="player-info">
     <h1><%= player.name %></h1>
@@ -61,8 +62,8 @@
             <td><%= mp.quality %>%</td>
             <td><%= mp.stock %></td>
             <td>
-              <%= link_to "Buy", buy_player_good_path(player, good_id: mp.good.id), method: :post, class: "btn-small" %>
-              <%= link_to "Sell", sell_player_good_path(player, good_id: mp.good.id), method: :post, class: "btn-small" %>
+              <%= button_to "Buy", buy_good_player_path(player, mp.good.id), method: :post, class: "btn-small" %>
+              <%= button_to "Sell", sell_good_player_path(player, mp.good.id), method: :post, class: "btn-small" %>
             </td>
           </tr>
         <% end %>
@@ -91,7 +92,7 @@
             <td><%= route.time_cost %> hours</td>
             <td>
               <% if player.fuel >= route.fuel_cost %>
-                <%= link_to "Travel", travel_player_path(player, destination_id: route.to_planet.id), method: :post, class: "btn-small" %>
+                <%= button_to "Travel", travel_player_path(player, destination_id: route.to_planet.id), method: :post, class: "btn-small" %>
               <% else %>
                 <span class="disabled">Not enough fuel</span>
               <% end %>
@@ -102,17 +103,17 @@
     </table>
   </div>
 
-  <%= link_to "Back to Players", players_path(user_id: player.user_id) %>
+  <%= link_to "Back to Players", user_players_path(player.user_id) %>
 </div>
 
 <style>
-  .game-interface { max-width: 1200px; margin: 0 auto; }
+  .game-interface { max-width: 1200px; margin: 0 auto; padding: 20px; }
   .player-info { background: #f0f0f0; padding: 20px; margin-bottom: 20px; border-radius: 5px; }
   .inventory, .market, .travel { margin-bottom: 30px; }
   table { width: 100%; border-collapse: collapse; margin-top: 10px; }
   th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
   th { background: #333; color: white; }
-  .btn, .btn-small { padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 3px; display: inline-block; }
+  .btn, .btn-small { padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border: none; border-radius: 3px; display: inline-block; cursor: pointer; }
   .btn-small { padding: 4px 8px; font-size: 0.9em; }
   .disabled { color: #999; }
   .info { background: #e7f3ff; padding: 10px; border-radius: 3px; }
