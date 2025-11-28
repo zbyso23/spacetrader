@@ -16,7 +16,6 @@ class Player::Operation::Create < Trailblazer::Operation
   end
 
   def set_starting_planet(ctx, contract:, **)
-    # Hráč začíná na Marsu
     contract.model.current_planet = Planet.find_by(name: 'Mars')
     contract.model.fuel = 100
     contract.model.credit = 1000
@@ -25,7 +24,6 @@ class Player::Operation::Create < Trailblazer::Operation
 
   def persist(ctx, contract:, **)
     if contract.save
-      # Dej hráči startovní inventář
       player = contract.model
       water = Good.find_by(name: 'Water')
       protein = Good.find_by(name: 'Protein')
