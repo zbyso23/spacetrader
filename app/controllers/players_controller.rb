@@ -97,7 +97,11 @@ class PlayersController < ApplicationController
   def inventory_summary
     result = Player::Operation::InventorySummaryJsonApi.(params: params)
     if result.success?
-      render json: Player::Representer::PlayerInventoryRepresenter.for_collection.prepare(result[:inventory_records])
+      inventory_records = result[:inventory_records]
+      representer = Player::Representer::PlayerInventoryRepresenter.for_collection
+      json = representer.new(inventory_records).to_json
+      render json: json, content_type: 'application/vnd.api+json'
+      # render json: Player::Representer::PlayerInventoryRepresenter.for_collection.prepare(result[:inventory_records])
     else
       render json: { errors: ['Player not found'] }, status: :not_found
     end

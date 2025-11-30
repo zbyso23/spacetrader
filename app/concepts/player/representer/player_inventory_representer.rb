@@ -17,5 +17,9 @@ class Player::Representer::PlayerInventoryRepresenter < Roar::Decorator
       property :name
       property :description
     end
+
+    def included?(_options)
+      false
+    end
   end
 end

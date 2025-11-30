@@ -48,6 +48,21 @@ host    all             all             ::1/128                 scram-sha-256
 host    all             all             ::1/128                 md5
 ```
 
+## API call
+**basic**
+```
+curl -X GET "http://localhost:3000/players/5/inventory_summary" \
+  -H "Accept: application/vnd.api+json"
+```
+
+**with good**
+```
+curl -X GET "http://localhost:3000/players/5/inventory_summary?include=good" \
+  -H "Accept: application/vnd.api+json"
+```
+
+
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
