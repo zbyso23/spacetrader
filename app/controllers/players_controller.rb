@@ -98,8 +98,16 @@ class PlayersController < ApplicationController
     result = Player::Operation::InventorySummaryJsonApi.(params: params)
     if result.success?
       inventory_records = result[:inventory_records]
+      include_goods = result[:include_goods]
       representer = Player::Representer::PlayerInventoryRepresenter.for_collection
-      json = representer.new(inventory_records).to_json
+      json =
+        if include_goods
+          representer.new(inventory_records).to_json
+        else
+          data = JSON.parse(representer.new(inventory_records).to_json)
+          data.delete('included')
+          data.to_json
+        end
       render json: json, content_type: 'application/vnd.api+json'
       # render json: Player::Representer::PlayerInventoryRepresenter.for_collection.prepare(result[:inventory_records])
     else
