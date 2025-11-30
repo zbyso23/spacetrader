@@ -1,13 +1,9 @@
 class Player::Operation::Restart < Trailblazer::Operation
-  step Model(Player, :find_by)
-  step :set_player
-  step Player::Macro::Reset.call
-  step Player::Macro::ClearInventory.call
-  step Player::Macro::AddStartItems.call
+  step Model(Player, :find_by), fail_fast: true
+  step Subprocess(Player::Operation::InitializePlayerState)
+  step :persist_model
 
-  def set_player(ctx, model:, **)
-    ctx[:errors] = []
-    ctx[:player] = model
-    true
+  def persist_model(_ctx, model:, **)
+    model.save!
   end
 end

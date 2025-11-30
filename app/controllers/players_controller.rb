@@ -17,9 +17,9 @@ class PlayersController < ApplicationController
 
   def create
     run Player::Operation::Create do |result|
-      return redirect_to player_path(result[:contract].model), notice: "Player created successfully"
+      return redirect_to player_path(result[:contract].model), notice: 'Player created successfully'
     end
-    
+
     render cell(Player::Cell::New, @model, user_id: params[:player][:user_id])
   end
 
@@ -30,69 +30,70 @@ class PlayersController < ApplicationController
 
   def buy_good
     result = Player::Operation::BuyGood.call(params: {
-      player_id: params[:id],
-      good_id: params[:good_id],
-      quantity: params[:quantity]
-    })
-    
+                                               player_id: params[:id],
+                                               good_id: params[:good_id],
+                                               quantity: params[:quantity]
+                                             })
+
     if result.success?
-      redirect_to player_path(params[:id]), notice: "Purchased #{result[:quantity]} units for #{result[:total_cost]} credits"
+      redirect_to player_path(params[:id]),
+                  notice: "Purchased #{result[:quantity]} units for #{result[:total_cost]} credits"
     else
-      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+      redirect_to player_path(params[:id]), alert: result[:errors].join(', ')
     end
   end
 
   def sell_good
     result = Player::Operation::SellGood.call(params: {
-      player_id: params[:id],
-      good_id: params[:good_id],
-      quantity: params[:quantity]
-    })
-    
+                                                player_id: params[:id],
+                                                good_id: params[:good_id],
+                                                quantity: params[:quantity]
+                                              })
+
     if result.success?
-      redirect_to player_path(params[:id]), notice: "Sold #{result[:quantity]} units for #{result[:total_earning]} credits"
+      redirect_to player_path(params[:id]),
+                  notice: "Sold #{result[:quantity]} units for #{result[:total_earning]} credits"
     else
-      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+      redirect_to player_path(params[:id]), alert: result[:errors].join(', ')
     end
   end
 
   def travel
     result = Player::Operation::Travel.call(params: {
-      player_id: params[:id],
-      destination_id: params[:destination_id]
-    })
-    
+                                              player_id: params[:id],
+                                              destination_id: params[:destination_id]
+                                            })
+
     if result.success?
       redirect_to player_path(params[:id]), notice: "Traveled to #{result[:destination].name}"
     else
-      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+      redirect_to player_path(params[:id]), alert: result[:errors].join(', ')
     end
   end
 
   def refuel
     result = Player::Operation::Refuel.call(params: {
-      player_id: params[:id]
-    })
+                                              player_id: params[:id]
+                                            })
 
     if result.success?
-      redirect_to player_path(params[:id]), notice: "Refueled"
+      redirect_to player_path(params[:id]), notice: 'Refueled'
     else
-      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+      redirect_to player_path(params[:id]), alert: result[:errors].join(', ')
     end
   end
 
   def restart
     result = Player::Operation::Restart.call(params: {
-      player_id: params[:id]
-    })
+                                               id: params[:id]
+                                             })
 
     if result.success?
-      redirect_to player_path(params[:id]), notice: "Restarted"
+      redirect_to player_path(params[:id]), notice: 'Restarted'
     else
-      redirect_to player_path(params[:id]), alert: result[:errors].join(", ")
+      redirect_to player_path(params[:id]), alert: result[:errors].join(', ')
     end
   end
-
 
   private
 

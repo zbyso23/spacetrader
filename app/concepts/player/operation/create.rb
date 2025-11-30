@@ -1,39 +1,26 @@
 class Player::Operation::Create < Trailblazer::Operation
   step :build_contract
   step :validate_contract
-  step :set_starting_planet
-  step :persist
+  step :persist_model_if_valid
+  step Subprocess(Player::Operation::InitializePlayerState)
+  step :persist_model_after_init
 
   def build_contract(ctx, params:, **)
-    user_id = params[:player][:user_id]
-    player = Player.new(user_id: user_id)
-    ctx[:contract] = Player::Contract::Create.new(player)
-    ctx[:contract].validate(params[:player])
+    ctx[:model] = Player.new(user_id: params[:player][:user_id])
+    ctx[:contract] = Player::Contract::Create.new(ctx[:model])
+    ctx[:params] = params
   end
 
   def validate_contract(ctx, contract:, **)
+    ctx[:contract].validate(ctx[:params][:player])
     contract.valid?
   end
 
-  def set_starting_planet(ctx, contract:, **)
-    contract.model.current_planet = Planet.find_by(name: 'Mars')
-    contract.model.fuel = 100
-    contract.model.credit = 1000
-    contract.model.reputation = 1
+  def persist_model_if_valid(_ctx, contract:, **)
+    contract.save
   end
 
-  def persist(ctx, contract:, **)
-    if contract.save
-      player = contract.model
-      water = Good.find_by(name: 'Water')
-      protein = Good.find_by(name: 'Protein')
-      
-      PlayerInventory.create(player: player, good: water, quantity: 10, quality: 50)
-      PlayerInventory.create(player: player, good: protein, quantity: 5, quality: 50)
-      
-      true
-    else
-      false
-    end
+  def persist_model_after_init(_ctx, model:, **)
+    model.save!
   end
 end
