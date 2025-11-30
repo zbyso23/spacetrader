@@ -1,10 +1,16 @@
 Rails.application.routes.draw do
-  root "users#index"
+  root 'users#index'
 
   resources :users do
-    resources :players, only: [:index, :new, :create]
+    resources :players, only: %i[index new create]
   end
-  
+
+  resources :players, only: [] do
+    member do
+      get :inventory_summary
+    end
+  end
+
   resources :players, only: [:show] do
     member do
       post :travel

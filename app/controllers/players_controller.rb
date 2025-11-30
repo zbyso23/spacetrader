@@ -87,11 +87,19 @@ class PlayersController < ApplicationController
     result = Player::Operation::Restart.call(params: {
                                                id: params[:id]
                                              })
-
     if result.success?
       redirect_to player_path(params[:id]), notice: 'Restarted'
     else
       redirect_to player_path(params[:id]), alert: result[:errors].join(', ')
+    end
+  end
+
+  def inventory_summary
+    result = Player::Operation::InventorySummaryJsonApi.(params: params)
+    if result.success?
+      render json: Player::Representer::PlayerInventoryRepresenter.for_collection.prepare(result[:inventory_records])
+    else
+      render json: { errors: ['Player not found'] }, status: :not_found
     end
   end
 

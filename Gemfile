@@ -9,22 +9,27 @@ gem 'rails', '~> 7.0.0'
 
 gem 'pg'
 
-gem "trailblazer"
-gem "trailblazer-rails"
+gem 'trailblazer'
+gem 'trailblazer-rails'
 
 gem 'reform'
-gem 'reform-rails' 
+gem 'reform-rails'
 
-gem "trailblazer-cells"
-gem "cells-erb"
-gem "cells-rails"
+gem 'cells-erb'
+gem 'cells-rails'
+gem 'trailblazer-cells'
 
 gem 'resque'
 gem 'resque-pool'
 gem 'resque-scheduler'
 
+gem 'roar', '1.2.0'
+gem 'roar-jsonapi', '~> 0.0.3'
+
 gem 'dotenv-rails'
+gem 'finite_machine'
 gem 'haml_lint', require: false
+gem 'jwt'
 gem 'pry-byebug'
 gem 'pry-rails'
 gem 'puma'
@@ -40,9 +45,6 @@ gem 'rubocop-rspec_rails'
 gem 'spring'
 gem 'spring-commands-rspec'
 gem 'webmock'
-gem 'finite_machine'
-gem 'jwt'
-
 
 gem 'sprockets-rails'
-gem "tailwindcss-rails", "~> 4.4"
+gem 'tailwindcss-rails', '~> 4.4'
