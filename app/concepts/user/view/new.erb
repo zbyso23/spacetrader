@@ -1,4 +1,4 @@
-<h1>New User</h1>
+<h2 class="text-2xl font-bold mb-4 text-gray-800">New User</h2>
 
 <%= form_with model: contract.model, class: "max-w-md mx-auto p-6 bg-white shadow-md rounded-lg", url: users_path do |f| %>
   <div>
@@ -9,7 +9,7 @@
     <% end %>
   </div>
 
-  <div>
+  <div class="mt-2">
     <%= f.label :email %>
     <%= f.email_field :email, class: "border p-2 w-full" %>
     <% if contract.errors[:email].any? %>
@@ -17,5 +17,7 @@
     <% end %>
   </div>
 
-  <%= f.submit "Create User", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  <%= f.submit "Create User", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded" %>
 <% end %>
+
+<%= link_to "← Back to Users", users_path, class: "inline-block mt-8 text-blue-600 hover:text-blue-800 font-medium" %>

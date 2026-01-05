@@ -1,33 +1,36 @@
-<h1>Players</h1>
+<h2 class="text-2xl font-bold mb-4 text-gray-800">Players</h2>
 
-<%= link_to "New Player", new_user_player_path(user_id), class: "btn" %>
+<div class="w-fit bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition cursor-pointer">
+  <%= link_to "New Player", new_user_player_path(user_id), class: "btn" %>
+</div>
 
-<table>
-  <thead>
+<table class="w-full">
+  <thead class="bg-gray-100">
     <tr>
-      <th>Name</th>
-      <th>User</th>
-      <th>Location</th>
-      <th>Credits</th>
-      <th>Fuel</th>
-      <th>Reputation</th>
-      <th>Actions</th>
+      <th class="px-4 py-2 text-left">Name</th>
+      <th class="px-4 py-2 text-left">User</th>
+      <th class="px-4 py-2 text-left">Location</th>
+      <th class="px-4 py-2 text-left">Credits</th>
+      <th class="px-4 py-2 text-left">Fuel</th>
+      <th class="px-4 py-2 text-left">Reputation</th>
+      <th class="px-4 py-2 text-left">Actions</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="divide-y">
     <% players.each do |player| %>
-      <tr>
-        <td><%= player.name %></td>
-        <td><%= player.user.name %></td>
-        <td><%= player.current_planet&.name || 'Unknown' %></td>
-        <td><%= player.credit %></td>
-        <td><%= player.fuel %></td>
-        <td><%= player.reputation %></td>
-        <td>
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3"><%= player.name %></td>
+        <td class="px-4 py-3"><%= player.user.name %></td>
+        <td class="px-4 py-3"><%= player.current_planet&.name || 'Unknown' %></td>
+        <td class="px-4 py-3"><%= player.credit %></td>
+        <td class="px-4 py-3"><%= player.fuel %></td>
+        <td class="px-4 py-3"><%= player.reputation %></td>
+        <td class="px-4 py-3">
           <%= link_to "Play", player_path(player) %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-<%= link_to "Back to Users", users_path %>
+
+<%= link_to "← Back to Users", users_path, class: "inline-block mt-8 text-blue-600 hover:text-blue-800 font-medium" %>
